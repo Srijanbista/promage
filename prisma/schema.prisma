@@ -21,4 +21,17 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   token String?
+  isDeleted Boolean @default(false)
+  assignedProjects Project[]
+}
+
+model Project{
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  managerId String @db.ObjectId
+  manager User @relation(fields: [managerId], references: [id])
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isDeleted Boolean @default(false)
 }
