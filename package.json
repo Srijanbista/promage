@@ -10,12 +10,16 @@
     "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@prisma/client": "^5.16.2",
     "bcrypt": "^5.1.1",
+    "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
