@@ -2,7 +2,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { HTMLInputTypeAttribute, useState } from "react";
 import * as yup from "yup";
-import { handleLogin } from "../login/(services)/Login.service";
+import {
+  handleLogin,
+  handleUserSignup,
+} from "../login/(services)/Login.service";
 import { useRouter } from "next/navigation";
 
 // Validation schema for the login form
@@ -41,7 +44,7 @@ const LoginForm = () => {
           initialValues={
             isSignInPage ? initialValues : { name: "", ...initialValues }
           }
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
             isSignInPage
               ? handleLogin(values)
                   .then((resp: any) => {
@@ -50,7 +53,15 @@ const LoginForm = () => {
                     router.push("/dashboard");
                   })
                   .catch((err) => console.log("Invalid credentials"))
-              : console.log(values);
+                  .finally(() => resetForm())
+              : handleUserSignup(values as any)
+                  .then((resp: any) => {
+                    console.log(resp);
+                  })
+                  .catch((err) => {
+                    console.log("Error creating user");
+                  })
+                  .finally(() => resetForm());
           }}
           validationSchema={isSignInPage ? LoginFormSchema : SignUpFormSchema}
         >
