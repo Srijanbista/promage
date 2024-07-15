@@ -26,7 +26,7 @@ export default function Sidebar() {
       name: "Projects",
       icon: <ClipboardDocumentListIcon className="w-6 h-6" />,
       iconSelected: <ClipboardDocumentListIcon className="w-6 h-6" />,
-      path: "/projects",
+      path: "/project",
       isActive: true,
     },
   ];
