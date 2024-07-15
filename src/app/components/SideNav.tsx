@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import {
   ChevronDoubleLeftIcon,
-  HomeIcon,
+  PlusIcon,
   ClipboardDocumentListIcon,
+  Squares2X2Icon,
 } from "@heroicons/react/24/outline";
-import { HomeIcon as HomeIconSolid } from "@heroicons/react/24/solid";
+import { Squares2X2Icon as Squares2X2IconSolid } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -15,8 +16,8 @@ export default function Sidebar() {
     {
       id: 1,
       name: "Dashboard",
-      icon: <HomeIcon className="w-6 h-6" />,
-      iconSelected: <HomeIconSolid className="w-6 h-6" />,
+      icon: <Squares2X2Icon className="w-6 h-6" />,
+      iconSelected: <Squares2X2IconSolid className="w-6 h-6" />,
       path: "/dashboard",
       isActive: true,
     },
@@ -62,13 +63,27 @@ export default function Sidebar() {
           !isDesktopView && (isCollapsed ? "w-52 -left-w-52" : "w-52 left-0")
         }`}
       >
-        <div className="pt-12 border-b border-neutral-200 overflow-y-auto scrollbar-track-primary-200 scrollbar-track-rounded-lg scrollbar-thumb-primary-700 scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-h-5">
+        <div className="pt-12 overflow-y-auto overflow-x-hidden scrollbar-track-primary-200 scrollbar-track-rounded-lg scrollbar-thumb-primary-700 scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-h-5">
           <div className="flex gap-x-2 mb-20 items-center">
             <span className="w-6 h-6 bg-primary rounded-full"></span>
             <span
               className={`text-3xl text-white font-medium overflow-hidden transition-opacity duration-200 ${hiddenStyle}`}
             >
               Promage
+            </span>
+          </div>
+          <div className="p-2.5 h-11 bg-white rounded-3xl text-black w-full mb-20 flex items-center gap-x-2">
+            <PlusIcon
+              className={`text-white w-6 h-6 p-1 bg-orange-500 rounded-full `}
+            />
+            <span
+              className={`text-base font-medium overflow-hidden text-wrap transition-opacity duration-200 ${
+                isCollapsed && isDesktopView
+                  ? "group-hover/aside:inline-flex group-hover/aside:opacity-100 opacity-0"
+                  : "opacity-100"
+              }`}
+            >
+              Create
             </span>
           </div>
           {sideNavItems.map(
@@ -84,14 +99,6 @@ export default function Sidebar() {
               )
           )}
         </div>
-
-        <div
-          className={`flex justify-center grow items-center overflow-hidden transition-opacity duration-200 ${
-            isDesktopView && isCollapsed
-              ? "opacity-0 group-hover/aside:opacity-100"
-              : "opacity-100"
-          }`}
-        ></div>
       </div>
     </aside>
   );
@@ -111,7 +118,7 @@ export const SideNavItem: React.FC<SideNavItemProps> = ({
   };
 
   const itemClass = isCurrent(pathName, item.path)
-    ? "bg-white text-orange-500 rounded-lg"
+    ? "bg-white text-orange-500 rounded-3xl"
     : "text-white";
   const hiddenStyle =
     isDesktopView && isCollapsed
@@ -129,7 +136,7 @@ export const SideNavItem: React.FC<SideNavItemProps> = ({
           navigateToLink(item.path, true);
         }
       }}
-      className={`flex items-center w-full gap-2 p-2.5 hover:bg-primary-50 hover:text-primary-700 cursor-pointer h-11 rounded mb-1 lg:mb-2 ${itemClass}`}
+      className={`flex items-center w-full gap-2 p-2.5 cursor-pointer  rounded mb-3 lg:mb-6 ${itemClass}`}
     >
       <div className="w-6 h-6">
         {isCurrent(pathName, item.path)
