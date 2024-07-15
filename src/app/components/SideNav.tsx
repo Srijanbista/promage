@@ -13,10 +13,14 @@ import {
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Modal } from "./Modal";
+import CreatProjectForm from "./CreatProjectForm";
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDesktopView, setIsDesktopView] = useState(true);
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] =
+    useState(false);
 
   const sideNavItems = [
     {
@@ -54,6 +58,14 @@ export default function Sidebar() {
     <aside
       className={`bg-black absolute col-span-2 text-white z-50 lg:relative border-r border-neutral-200 py-3 px-3 lg:py-6 p lg:px-6`}
     >
+      <Modal
+        isModalOpen={isCreateProjectModalOpen}
+        setIsModalOpen={setIsCreateProjectModalOpen}
+      >
+        <CreatProjectForm
+          setIsCreateProjectModalOpen={setIsCreateProjectModalOpen}
+        />
+      </Modal>
       <ChevronDoubleLeftIcon
         strokeWidth={2}
         className={`absolute -right-[1.125rem] top-20 bg-white border border-neutral-200 text-neutral-800 rounded-full hover:bg-primary-100 hover:text-primary-700 hover:shadow-sm p-2 w-9 transition-transform duration-500 ease-in-out cursor-pointer ${
@@ -90,6 +102,7 @@ export default function Sidebar() {
         </div>
         <div className="pt-12 overflow-y-auto overflow-x-hidden scrollbar-track-primary-200 scrollbar-track-rounded-lg scrollbar-thumb-primary-700 scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-h-5">
           <button
+            onClick={() => setIsCreateProjectModalOpen(true)}
             className={`flex p-2.5 gap-2 ${
               isCollapsed ? "bg-orange-500 " : "bg-white"
             } text-orange-500  group-hover/aside:bg-white group-hover/aside:text-orange-500 transition-colors duration-200 ease-in-out  rounded-3xl items-center w-full cursor-pointer  mb-3 lg:mb-10`}
