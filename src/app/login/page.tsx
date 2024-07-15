@@ -2,7 +2,7 @@ import LoginForm from "../components/LoginForm";
 
 const Login = () => {
   return (
-    <div className="h-screen w-screen bg-white grid place-items-center">
+    <div className="h-screen w-screen bg-primary grid place-items-center">
       <LoginForm />
     </div>
   );
