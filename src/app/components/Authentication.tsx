@@ -1,6 +1,9 @@
 "use client";
+
 import { useRouter, usePathname } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
+import SideNav from "./SideNav";
+import Header from "./Header";
 
 const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,42 +12,39 @@ const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const verifyToken = async (token: string) => {
       try {
-        // Check if we're running in the browser
-        if (typeof window !== "undefined") {
-          const token = localStorage.getItem("user:token");
-
-          if (token) {
-            const response = await fetch("/api/verify-token", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ token }),
-            });
-
-            if (response.ok) {
-              setIsAuthenticated(true);
-              router.push("/");
-            } else {
-              setIsAuthenticated(false);
-              if (pathname !== "/login") {
-                router.push("/login");
-              }
-            }
-          } else {
-            setIsAuthenticated(false);
-            if (pathname !== "/login") {
-              router.push("/login");
-            }
-          }
-        }
+        const response = await fetch("/api/verify-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+        return response.ok;
       } catch (error) {
         console.error("Error verifying token:", error);
-      } finally {
-        setIsLoaded(true);
+        return false;
       }
+    };
+
+    const checkAuthentication = async () => {
+      if (typeof window === "undefined") {
+        setIsLoaded(true);
+        return;
+      }
+
+      const token = localStorage.getItem("user:token");
+      const isAuthenticated = token ? await verifyToken(token) : false;
+
+      setIsAuthenticated(isAuthenticated);
+
+      if (isAuthenticated) {
+        if (pathname === "/login") router.push("/dashboard");
+      } else {
+        if (pathname !== "/login") router.push("/login");
+        localStorage.removeItem("user:token");
+      }
+
+      setIsLoaded(true);
     };
 
     checkAuthentication();
@@ -55,10 +55,22 @@ const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
   }
 
   if (!isAuthenticated && pathname !== "/login") {
-    return null; // Prevent rendering while redirecting
+    return null;
   }
 
-  return <>{children}</>;
+  if (pathname === "/login") {
+    return <>{children}</>;
+  }
+
+  return (
+    <div className="flex">
+      <SideNav />
+      <div className="grow flex flex-col h-screen">
+        <Header />
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default AuthenticationProvider;
