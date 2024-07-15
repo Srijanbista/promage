@@ -2,12 +2,18 @@
 import { useState, useEffect } from "react";
 import {
   ChevronDoubleLeftIcon,
-  PlusIcon,
   ClipboardDocumentListIcon,
+  PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
-import { Squares2X2Icon as Squares2X2IconSolid } from "@heroicons/react/24/solid";
+import {
+  Squares2X2Icon as Squares2X2IconSolid,
+  ClipboardDocumentListIcon as ClipboardDocumentListIconSolid,
+} from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDesktopView, setIsDesktopView] = useState(true);
@@ -25,7 +31,7 @@ export default function Sidebar() {
       id: 2,
       name: "Projects",
       icon: <ClipboardDocumentListIcon className="w-6 h-6" />,
-      iconSelected: <ClipboardDocumentListIcon className="w-6 h-6" />,
+      iconSelected: <ClipboardDocumentListIconSolid className="w-6 h-6" />,
       path: "/project",
       isActive: true,
     },
@@ -63,29 +69,40 @@ export default function Sidebar() {
           !isDesktopView && (isCollapsed ? "w-52 -left-w-52" : "w-52 left-0")
         }`}
       >
+        <div className="mb-20 flex gap-x-2 items-center justify-between">
+          <Image
+            src={"/logo.svg"}
+            height={40}
+            width={40}
+            alt="logo"
+            className="text-red-500 bg-white p-2 rounded-full"
+            color="white"
+          />
+          <span
+            className={` text-lg font-medium overflow-hidden transition-opacity duration-200${
+              isDesktopView && isCollapsed
+                ? "group-hover/aside:inline-flex group-hover/aside:opacity-100 duration-500 opacity-0"
+                : "opacity-100"
+            }`}
+          >
+            Promage
+          </span>
+        </div>
         <div className="pt-12 overflow-y-auto overflow-x-hidden scrollbar-track-primary-200 scrollbar-track-rounded-lg scrollbar-thumb-primary-700 scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-h-5">
-          <div className="flex gap-x-2 mb-20 items-center">
-            <span className="w-6 h-6 bg-primary rounded-full"></span>
+          <button
+            className={`flex p-2.5 gap-2 ${
+              isCollapsed ? "bg-orange-500 " : "bg-white"
+            } text-orange-500  group-hover/aside:bg-white group-hover/aside:text-orange-500 transition-colors duration-200 ease-in-out  rounded-3xl items-center w-full cursor-pointer  mb-3 lg:mb-10`}
+          >
+            <div className="w-6 h-6">
+              <PlusIcon className="w-6 h-6 text-white bg-orange-500 rounded-full" />
+            </div>
             <span
-              className={`text-3xl text-white font-medium overflow-hidden transition-opacity duration-200 ${hiddenStyle}`}
-            >
-              Promage
-            </span>
-          </div>
-          <div className="p-2.5 h-11 bg-white rounded-3xl text-black w-full mb-20 flex items-center gap-x-2">
-            <PlusIcon
-              className={`text-white w-6 h-6 p-1 bg-orange-500 rounded-full `}
-            />
-            <span
-              className={`text-base font-medium overflow-hidden text-wrap transition-opacity duration-200 ${
-                isCollapsed && isDesktopView
-                  ? "group-hover/aside:inline-flex group-hover/aside:opacity-100 opacity-0"
-                  : "opacity-100"
-              }`}
+              className={`text-base font-medium overflow-hidden transition-opacity duration-200 ${hiddenStyle}`}
             >
               Create
             </span>
-          </div>
+          </button>
           {sideNavItems.map(
             (item) =>
               item.isActive && (
@@ -112,11 +129,6 @@ export const SideNavItem: React.FC<SideNavItemProps> = ({
   const pathName = usePathname();
   const navigateToLink = useNavigateToLink();
 
-  const [isSubMenuExpanded, setIsSubMenuExpanded] = useState(false);
-  const handleToggleMenuCollapse = () => {
-    setIsSubMenuExpanded(!isSubMenuExpanded);
-  };
-
   const itemClass = isCurrent(pathName, item.path)
     ? "bg-white text-orange-500 rounded-3xl"
     : "text-white";
@@ -124,9 +136,6 @@ export const SideNavItem: React.FC<SideNavItemProps> = ({
     isDesktopView && isCollapsed
       ? "group-hover/aside:inline-flex group-hover/aside:opacity-100 opacity-0"
       : "opacity-100";
-  useEffect(() => {
-    setIsSubMenuExpanded(isCurrent(pathName, item.path));
-  }, [item.path, pathName]);
 
   return (
     <button
@@ -181,23 +190,6 @@ interface SideNavItemProps {
 const isCurrent = (pathName: string, path: string) => {
   return path.startsWith(pathName) || pathName.startsWith(path);
 };
-
-function getSubMenuClassNames(
-  isSubMenuExpanded: boolean,
-  isCollapsed: boolean
-) {
-  if (isSubMenuExpanded) {
-    if (isCollapsed) {
-      return "group-hover/aside:max-h-60 max-h-0";
-    } else {
-      return "max-h-60 opacity-100";
-    }
-  } else {
-    return "max-h-0 opacity-0";
-  }
-}
-
-import { useRouter } from "next/navigation";
 
 export const useNavigateToLink = () => {
   const router = useRouter();
