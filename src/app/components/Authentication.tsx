@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import SideNav from "./SideNav";
 import Header from "./Header";
+import { Toaster } from "react-hot-toast";
 
 const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -64,6 +65,7 @@ const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex">
+      <Toaster />
       <SideNav />
       <div className="grow flex flex-col h-screen">
         <Header />
