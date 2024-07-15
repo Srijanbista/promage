@@ -31,7 +31,7 @@ const Header = () => {
           <ChevronDownIcon className="w-4 h-4" />
         </button>
       </div>
-      {/* <button onClick={handleLogOut}>Log Out</button> */}
+      <button onClick={handleLogOut}>Log Out</button>
     </div>
   );
 };
