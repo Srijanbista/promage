@@ -13,6 +13,13 @@ enum Role {
   PROJECTMANAGER
 }
 
+enum ProjectStatus {
+  ONGOING
+  COMPLETED
+  ATRISK
+  DELAYED
+}
+
 model User{
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String 
@@ -36,5 +43,6 @@ model Project{
   updatedAt DateTime @updatedAt
   isDeleted Boolean @default(false)
   dueDate DateTime?
+  status String @default("ONGOING")
   progress Int @default(0)
 }
