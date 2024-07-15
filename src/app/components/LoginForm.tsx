@@ -29,7 +29,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className="border flex flex-col container items-center justify-center py-10 px-5 w-1/2 bg-white/30">
+      <div className="border flex flex-col  items-center justify-center py-10 px-5 bg-white rounded-md shadow-lg">
         <h1 className="text-slate-800 font-semibold mb-4 text-4xl text-center">
           {`Welcome ${isSignInPage ? "back" : ""} to Promage`}
         </h1>
@@ -37,6 +37,7 @@ const LoginForm = () => {
           {isSignInPage ? "Sign In to explore" : "Sign Up to continue"}
         </span>
         <Formik
+          enableReinitialize
           initialValues={
             isSignInPage ? initialValues : { name: "", ...initialValues }
           }
@@ -53,7 +54,7 @@ const LoginForm = () => {
           }}
           validationSchema={isSignInPage ? LoginFormSchema : SignUpFormSchema}
         >
-          <Form className="flex flex-col gap-y-2 w-1/2">
+          <Form className="flex flex-col gap-y-2 w-11/12">
             {isSignInPage ? null : (
               <FieldGroup name="name" placeholder="Enter Email" label="Name" />
             )}
