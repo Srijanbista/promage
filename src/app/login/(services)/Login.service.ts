@@ -7,6 +7,9 @@ export async function handleLogin(data: { email: string; password: string }) {
       },
       body: JSON.stringify({ email: data.email, password: data.password }),
     });
+    if (!resp.ok) {
+      throw new Error("Invalid credentials");
+    }
     return resp.json();
   } catch (error) {
     console.log("error", error);
@@ -31,6 +34,9 @@ export async function handleUserSignup(data: {
         password: data.password,
       }),
     });
+    if (!resp.ok) {
+      throw new Error("Error creating user");
+    }
     return resp.json();
   } catch (error) {
     console.log("error", error);
