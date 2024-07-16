@@ -12,7 +12,7 @@ export const OverviewCard = ({
   additioanlInfo?: string;
 }) => {
   return (
-    <div className="bg-white/50 rounded-2xl p-6 shadow-md flex flex-col gap-y-4">
+    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4">
       {icon}
       <div className="flex flex-col gap-y-2">
         <span className="rounded-md text-black/60">{title}</span>
