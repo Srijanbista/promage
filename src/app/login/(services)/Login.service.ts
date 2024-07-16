@@ -1,6 +1,6 @@
 export async function handleLogin(data: { email: string; password: string }) {
   try {
-    const resp = await fetch("http://localhost:3000/api/auth/login", {
+    const resp = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export async function handleUserSignup(data: {
   password: string;
 }) {
   try {
-    const resp = await fetch("http://localhost:3000/api/user/create", {
+    const resp = await fetch("/api/user/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
