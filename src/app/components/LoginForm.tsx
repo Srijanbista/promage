@@ -1,9 +1,15 @@
+// LoginForm.js
 "use client";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { HTMLInputTypeAttribute, useState } from "react";
+import { Form, Formik, FormikHelpers } from "formik";
+import { useState } from "react";
 import * as yup from "yup";
-import { handleLogin } from "../login/(services)/Login.service";
 import { useRouter } from "next/navigation";
+import { errorToast, successToast } from "../utils/Toaster";
+import {
+  handleLogin,
+  handleUserSignup,
+} from "../login/(services)/Login.service";
+import { FormikInputField } from "./CreatProjectForm";
 
 // Validation schema for the login form
 const LoginFormSchema = yup.object().shape({
@@ -18,60 +24,107 @@ const SignUpFormSchema = yup.object().shape({
   password: yup.string().required("Required").min(8, "Password is too short"),
 });
 
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
+interface SignUpValues extends LoginValues {
+  name: string;
+}
+
 const LoginForm = () => {
   const [isSignInPage, setIsSignInPage] = useState(true);
   const router = useRouter();
-  // Initial values for the form
+
   const initialValues = {
     email: "",
     password: "",
   };
 
+  // Handles form submission
+  const handleFormSubmit = (
+    values: SignUpValues | LoginValues,
+    resetForm: FormikHelpers<LoginValues | SignUpValues>["resetForm"]
+  ) => {
+    if (isSignInPage) {
+      handleLogin(values as LoginValues)
+        .then((resp) => {
+          debugger;
+          console.log(resp);
+          localStorage.setItem("user:token", resp.token);
+          router.push("/dashboard");
+          setTimeout(() => {
+            successToast("Login successful");
+          }, 2000);
+        })
+        .catch(() => {
+          console.log("Invalid credentials");
+          setTimeout(() => {
+            errorToast("Invalid credentials");
+          }, 2000);
+        })
+        .finally(() => resetForm());
+    } else {
+      handleUserSignup(values as SignUpValues)
+        .then((resp) => {
+          console.log(resp);
+          setTimeout(() => {
+            successToast("Sign Up successful");
+          }, 2000);
+        })
+        .catch(() => {
+          console.log("Error creating user");
+          setTimeout(() => {
+            errorToast("Error creating user");
+          }, 2000);
+        })
+        .finally(() => resetForm());
+    }
+  };
+
   return (
-    <>
-      <div className="border flex flex-col container items-center justify-center py-10 px-5 w-1/2 bg-white/30">
-        <h1 className="text-slate-800 font-semibold mb-4 text-4xl text-center">
-          {`Welcome ${isSignInPage ? "back" : ""} to Promage`}
-        </h1>
-        <span className="text-lg mb-10">
-          {isSignInPage ? "Sign In to explore" : "Sign Up to continue"}
-        </span>
-        <Formik
-          initialValues={
-            isSignInPage ? initialValues : { name: "", ...initialValues }
-          }
-          onSubmit={(values) => {
-            isSignInPage
-              ? handleLogin(values)
-                  .then((resp: any) => {
-                    console.log(resp);
-                    localStorage.setItem("user:token", resp.token);
-                    router.push("/dashboard");
-                  })
-                  .catch((err) => console.log("Invalid credentials"))
-              : console.log(values);
-          }}
-          validationSchema={isSignInPage ? LoginFormSchema : SignUpFormSchema}
-        >
-          <Form className="flex flex-col gap-y-2 w-1/2">
-            {isSignInPage ? null : (
-              <FieldGroup name="name" placeholder="Enter Email" label="Name" />
+    <div className="border flex flex-col items-center justify-center py-10 px-5 bg-white rounded-md shadow-lg max-w-md w-full mx-auto sm:w-3/4 lg:w-1/2">
+      <h1 className="text-slate-800 font-semibold mb-4 text-4xl text-center">
+        Promage
+      </h1>
+      <span className="text-lg mb-10 text-center">
+        {isSignInPage ? "Sign In to explore" : "Sign Up to continue"}
+      </span>
+      <Formik
+        enableReinitialize
+        initialValues={
+          isSignInPage ? initialValues : { name: "", ...initialValues }
+        }
+        onSubmit={(values, { resetForm }) =>
+          handleFormSubmit(values, resetForm)
+        }
+        validationSchema={isSignInPage ? LoginFormSchema : SignUpFormSchema}
+      >
+        {(formikProps) => (
+          <Form className="flex flex-col gap-y-6 w-full">
+            {!isSignInPage && (
+              <FormikInputField
+                name="name"
+                placeholder="Name"
+                formikProps={formikProps}
+              />
             )}
-            <FieldGroup
+            <FormikInputField
               name="email"
               type="email"
-              placeholder="Enter your email"
-              label="Email"
+              placeholder="Email"
+              formikProps={formikProps}
             />
-            <FieldGroup
+            <FormikInputField
               name="password"
               type="password"
-              placeholder="Enter your password"
-              label="Password"
+              placeholder="Password"
+              formikProps={formikProps}
             />
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg my-8"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg my-8 transition duration-150 ease-in-out transform hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700 active:scale-95"
             >
               {isSignInPage ? "Log In" : "Sign Up"}
             </button>
@@ -80,7 +133,7 @@ const LoginForm = () => {
                 ? "Don't have an Account? "
                 : "Already have an account? "}
               <button
-                className="text-blue-500 underline"
+                className="text-blue-500 underline transition duration-150 ease-in-out transform hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 active:text-blue-700 active:scale-95"
                 type="button"
                 onClick={() => setIsSignInPage(!isSignInPage)}
               >
@@ -88,38 +141,10 @@ const LoginForm = () => {
               </button>
             </p>
           </Form>
-        </Formik>
-      </div>
-    </>
+        )}
+      </Formik>
+    </div>
   );
 };
 
 export default LoginForm;
-
-export const FieldGroup = ({
-  name,
-  type = "text",
-  placeholder,
-  label,
-  className = "",
-}: {
-  name: string;
-  type?: string;
-  placeholder: string;
-  label: string;
-  className?: HTMLInputTypeAttribute;
-}) => {
-  return (
-    <>
-      <label htmlFor={name} className="text-lg">
-        {label}
-      </label>
-      <Field
-        type={type}
-        name={name}
-        className={`border rounded-md p-2 ${className}`}
-      />
-      <ErrorMessage name={name} component="span" className="text-red-500" />
-    </>
-  );
-};
