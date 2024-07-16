@@ -34,4 +34,8 @@ model Project{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isDeleted Boolean @default(false)
+  dueDate DateTime?
+  status String @default("ONGOING")
+  budget Int @default(0)
+  progress Int @default(0)
 }
