@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, email, password, role } = await req.json();
 
     if (!email || !password) {
       throw new Error("Invalid request");
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
           data: {
             name,
             email,
+            role,
           },
         });
 
