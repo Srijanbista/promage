@@ -10,11 +10,19 @@ datasource db {
 
 enum Role {
   USER
-  ADMIN
+  PROJECTMANAGER
+}
+
+enum ProjectStatus {
+  ONGOING
+  COMPLETED
+  ATRISK
+  DELAYED
 }
 
 model User{
   id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String 
   email String @unique
   password String?
   role Role @default(USER)
@@ -34,4 +42,7 @@ model Project{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isDeleted Boolean @default(false)
+  dueDate DateTime?
+  status String @default("ONGOING")
+  progress Int @default(0)
 }
