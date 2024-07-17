@@ -28,7 +28,7 @@ export default function Sidebar() {
       name: "Dashboard",
       icon: <Squares2X2Icon className="w-6 h-6" />,
       iconSelected: <Squares2X2IconSolid className="w-6 h-6" />,
-      path: "/dashboard",
+      path: "/",
       isActive: true,
     },
     {
@@ -201,7 +201,10 @@ interface SideNavItemProps {
 }
 
 const isCurrent = (pathName: string, path: string) => {
-  return path.startsWith(pathName) || pathName.startsWith(path);
+  if (path === "/") {
+    return pathName === path;
+  }
+  return pathName === path || pathName.startsWith(path + "/");
 };
 
 export const useNavigateToLink = () => {
