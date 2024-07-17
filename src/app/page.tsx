@@ -5,10 +5,14 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { OverviewCard } from "./components/OverviewCard";
-import { getTotalProjectRevenue } from "./api/project/(services)/project.service";
+import { getAllProjects } from "./api/project/(services)/project.service";
+import ProjectSummary from "./components/ProjectSummary";
+import { ProjectWithManager } from "./utils/types";
 export default async function Home() {
   try {
-    const data = await getTotalProjectRevenue();
+    const projects: ProjectWithManager[] = await getAllProjects();
+    const totalRevenue =
+      projects?.reduce((amount, project) => amount + project.budget, 0) ?? 0;
 
     const overViewCardData = [
       {
@@ -17,7 +21,7 @@ export default async function Home() {
           <ChartBarIcon className="p-3 bg-[#D398E7] w-12 h-12 rounded-full text-white" />
         ),
         title: "Total Revenue",
-        description: data.totalRevenue.toString(),
+        description: totalRevenue.toString(),
         additionalInfo: "12% increase from last month",
       },
       {
@@ -26,7 +30,7 @@ export default async function Home() {
           <BriefcaseIcon className="p-3 bg-[#E89271] w-12 h-12 rounded-full text-white" />
         ),
         title: "Projects",
-        description: data.count.toString(),
+        description: projects?.length.toString() ?? "0",
         additionalInfo: "10% decrease from last month",
       },
       {
@@ -52,7 +56,7 @@ export default async function Home() {
       <main className="overflow-y-auto no-scrollbar scroll-smooth py-2 px-3 lg:px-6 lg:py-4 bg-[#F0C274]/30 text-black">
         <section>
           <h1 className="text-lg lg:text-2xl mb-4">Overview</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 mb-4">
             {overViewCardData.map((data) => (
               <OverviewCard
                 key={data.id}
@@ -64,10 +68,13 @@ export default async function Home() {
             ))}
           </div>
         </section>
-        <section className="mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 "></div>
+        <section>
+          <ProjectSummary projects={projects} />
         </section>
       </main>
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
