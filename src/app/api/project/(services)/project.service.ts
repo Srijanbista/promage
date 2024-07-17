@@ -7,7 +7,12 @@ export async function getAllProjects() {
         isDeleted: false,
       },
       include: {
-        manager: true,
+        manager: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
       },
       orderBy: {
         dueDate: "asc",
