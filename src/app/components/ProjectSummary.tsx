@@ -5,26 +5,26 @@ import { dateFormatter } from "../utils/helpers";
 const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
   console.log("projects", projects);
   return (
-    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 max-w-4xl">
+    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 max-w-4xl overflow-hidden">
       <div className="flex justify-between">
         <h1 className="font-semibold">Project Summary</h1>
-        <div className="flex gap-x-3">
-          <button className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center">
-            <span>Project</span>
+        <div className="flex gap-x-2">
+          <button className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center ">
+            <span className="text-xs lg:text-sm">Project</span>
+            <ChevronDownIcon className="w-4 h-4" />
+          </button>
+          <button className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center">
+            <span className="text-xs lg:text-sm">Project Manager</span>
             <ChevronDownIcon className="w-4 h-4" />
           </button>
           <button className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center">
-            <span>Project Manager</span>
-            <ChevronDownIcon className="w-4 h-4" />
-          </button>
-          <button className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center">
-            <span>Status</span>
+            <span className="text-xs lg:text-sm">Status</span>
             <ChevronDownIcon className="w-4 h-4" />
           </button>
         </div>
       </div>
       {projects?.length > 0 ? (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-x-auto">
           <div className="w-full text-base font-medium text-neutral-900">
             <div className="w-full px-4 py-2 border-b flex justify-center">
               <div className="grid grid-cols-10 gap-3 w-full text-sm">
@@ -54,7 +54,7 @@ const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
               key={project.id}
               className="w-full p-2 border-b flex justify-center"
             >
-              <div className="grid grid-cols-10 gap-3 w-full text-sm pl-2">
+              <div className="grid grid-cols-10 gap-3 w-full text-xs md:text-sm pl-2">
                 <div className="col-span-3 flex items-center gap-1">
                   <span className="truncate">{project.title}</span>
                 </div>

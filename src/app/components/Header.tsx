@@ -12,8 +12,8 @@ const Header = () => {
   };
 
   return (
-    <div className="border-b border-white backdrop-blur-sm py-2 px-3 lg:py-4 p lg:px-6 flex items-center justify-between bg-[#F0C274]/30">
-      <h1 className="text-black font-medium text-3xl lg:text-3xl">Dashboard</h1>
+    <div className="border-b border-white backdrop-blur-sm py-2 lg:py-4 p px-6 lg:px-12 flex items-center justify-between bg-[#F0C274]/30">
+      <h1 className="text-black font-medium text-xl lg:text-3xl">Dashboard</h1>
       <div className="flex gap-x-5 items-center">
         <input
           type="text"
@@ -22,8 +22,8 @@ const Header = () => {
         />
         <div className="h-14 w-14 bg-white rounded-full hidden lg:block"></div>
 
-        <button className="bg-white pl-2 py-2 pr-4 rounded-2xl flex gap-x-4 items-center">
-          <div className="h-10 w-10 bg-black rounded-full "></div>
+        <button className="bg-white pl-2 py-2 pr-4 rounded-2xl flex gap-x-2 lg:gap-x-4 items-center">
+          <div className="h-5 lg:h-10 w-5 lg:w-10 bg-black rounded-full "></div>
           <div className="text-left hidden lg:block">
             <p className="text-xs">User Name</p>
             <p className="text-[10px] text-slate-400">Product Manager</p>
