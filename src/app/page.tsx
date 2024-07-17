@@ -12,7 +12,7 @@ export default async function Home() {
   try {
     const projects: ProjectWithManager[] = await getAllProjects();
     const totalRevenue =
-      projects?.reduce((amount, project) => amount + project.budget, 0) ?? 0;
+      projects?.reduce((amount, project) => amount + project.budget!, 0) ?? 0;
 
     const overViewCardData = [
       {
