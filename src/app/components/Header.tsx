@@ -12,7 +12,7 @@ const Header = () => {
   };
 
   return (
-    <div className="border-b border-white backdrop-blur-sm py-3 px-3 lg:py-6 p lg:px-6 flex items-center justify-between bg-[#F0C274]/30">
+    <div className="border-b border-white backdrop-blur-sm py-2 px-3 lg:py-4 p lg:px-6 flex items-center justify-between bg-[#F0C274]/30">
       <h1 className="text-black font-medium text-3xl lg:text-3xl">Dashboard</h1>
       <div className="flex gap-x-5 items-center">
         <input
