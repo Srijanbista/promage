@@ -1,15 +1,23 @@
+"use client";
 import { Combobox, Transition } from "@headlessui/react";
 import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
-import { Fragment, HTMLProps, useState } from "react";
+import { Fragment, HTMLProps, useEffect, useState } from "react";
 import * as yup from "yup";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
+import {
+  createProject,
+  getAllProjectManagers,
+} from "../project/(services)/project.service";
+import { errorToast, successToast } from "../utils/Toaster";
 
-const projectValidationSchema = yup.object().shape({
+export const projectValidationSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
   description: yup.string(),
-  manager: yup.string().required("Manager is required"),
+  managerEmail: yup.string().required("Manager is required"),
   status: yup.string(),
   dueDate: yup.date().required("Due date is required"),
   progress: yup.number(),
+  budget: yup.number(),
 });
 
 const CreatProjectForm = ({
@@ -17,10 +25,23 @@ const CreatProjectForm = ({
 }: {
   setIsCreateProjectModalOpen: CallableFunction;
 }) => {
-  const calculateDueDate = () => {
-    const currentDate = new Date();
-    return new Date(currentDate.setDate(currentDate.getDate() + 90));
-  };
+  const [managers, setManagers] = useState<{ name: string; email: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    const getAllManagers = async () => {
+      const data = await getAllProjectManagers();
+      return data.managers;
+    };
+
+    getAllManagers()
+      .then((resp) => {
+        console.log("managers", resp);
+        setManagers(resp);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="p-8 flex flex-col items-center ">
@@ -28,23 +49,35 @@ const CreatProjectForm = ({
         Create Project
       </h1>
       <Formik
+        enableReinitialize
         initialValues={{
           title: "",
           description: "",
-          manager: "Manager1",
+          managerEmail: "",
           status: "ONGOING",
-          dueDate: calculateDueDate(),
+          dueDate: "",
           progress: 0,
+          budget: 0,
         }}
         onSubmit={(values) => {
           console.log(values);
+          createProject(values)
+            .then((rsp) => {
+              console.log(rsp);
+              setIsCreateProjectModalOpen(false);
+              successToast("Project Added Successfully");
+            })
+            .catch((err) => {
+              console.log(err);
+              errorToast("Error Adding Project");
+            });
         }}
         validationSchema={projectValidationSchema}
       >
         {(formikProps) => {
           return (
             <Form className="w-full ">
-              <div className="flex flex-col gap-y-6 max-h-96 py-4">
+              <div className="flex flex-col gap-y-6 py-4">
                 <FormikInputField
                   formikProps={formikProps}
                   name="title"
@@ -58,14 +91,12 @@ const CreatProjectForm = ({
                 />
                 <ComboBoxField
                   formikProps={formikProps}
-                  targetField="manager"
+                  targetField="managerEmail"
                   placeholder="Manager"
-                  items={[
-                    { id: "Manager1", title: "Manager1" },
-                    { id: "ATRISK", title: "Manager2" },
-                    { id: "DELAYED", title: "Manager3" },
-                    { id: "COMPLETED", title: "Manager4" },
-                  ]}
+                  items={managers?.map(
+                    (manager) =>
+                      ({ id: manager.email, title: manager.name } ?? [])
+                  )}
                 />
                 <ComboBoxField
                   formikProps={formikProps}
@@ -83,6 +114,12 @@ const CreatProjectForm = ({
                   type="date"
                   name="dueDate"
                   placeholder="Due Date"
+                />
+                <FormikInputField
+                  formikProps={formikProps}
+                  type="number"
+                  name="budget"
+                  placeholder="Estimated Budget"
                 />
               </div>
               <div className="flex gap-x-4 mt-8">
@@ -156,8 +193,6 @@ export const FormikInputField = ({
     </div>
   );
 };
-
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 
 export const ComboBoxField = ({
   formikProps,
