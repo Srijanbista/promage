@@ -15,7 +15,10 @@ export const projectValidationSchema = yup.object().shape({
   description: yup.string(),
   managerEmail: yup.string().required("Manager is required"),
   status: yup.string(),
-  dueDate: yup.date().required("Due date is required"),
+  dueDate: yup
+    .date()
+    .required("Due date is required")
+    .min(new Date(), "Due date should be greater than today"),
   progress: yup.number(),
   budget: yup.number(),
 });
@@ -85,7 +88,7 @@ const CreatProjectForm = ({
                 />
                 <FormikInputField
                   formikProps={formikProps}
-                  type="textarea"
+                  type="text"
                   name="description"
                   placeholder="Description"
                 />
