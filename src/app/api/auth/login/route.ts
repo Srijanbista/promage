@@ -28,10 +28,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     const token = jwt.sign({ user: user.id }, process.env.JWT_SECRET ?? "", {
-      expiresIn: "24h",
+      expiresIn: "1h",
     });
 
-    return NextResponse.json({ message: "Login successful", token });
+    return NextResponse.json({
+      message: "Login successful",
+      token,
+      name: user.name,
+    });
   } catch (error) {
     console.error(error);
     throw new Error("Invalid request");
