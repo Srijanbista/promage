@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const router = useRouter();
@@ -10,10 +10,12 @@ const Header = () => {
     localStorage.removeItem("user:token");
     router.push("/login");
   };
-
+  const pathName = usePathname();
   return (
     <div className="border-b border-white backdrop-blur-sm py-2 lg:py-4 p px-6 lg:px-12 flex items-center justify-between bg-[#F0C274]/30">
-      <h1 className="text-black font-medium text-xl lg:text-3xl">Dashboard</h1>
+      <h1 className="text-black font-medium text-xl lg:text-3xl capitalize">
+        {pathName == "/" ? "Dashboard" : pathName.split("/")[1]}
+      </h1>
       <div className="flex gap-x-5 items-center">
         <input
           type="text"
@@ -31,7 +33,7 @@ const Header = () => {
           <ChevronDownIcon className="w-4 h-4" />
         </button>
       </div>
-      <button onClick={handleLogOut}>Log Out</button>
+      {/* <button onClick={handleLogOut}>Log Out</button> */}
     </div>
   );
 };
