@@ -23,6 +23,7 @@ export const ProjectBase = ({
             managerName={project.manager.name ?? "No Manager"}
             dateCreated={project.createdAt}
             lastUpdated={project.updatedAt}
+            dueDate={project.dueDate as any}
             progress={project.progress}
             budget={project.budget}
             status={project.status}
