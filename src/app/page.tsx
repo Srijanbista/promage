@@ -31,7 +31,7 @@ export default async function Home() {
           <ChartBarIcon className="p-3 bg-[#D398E7] w-12 h-12 rounded-full text-white" />
         ),
         title: "Total Revenue",
-        description: totalRevenue.toString(),
+        description: `$${totalRevenue.toLocaleString()}`,
         additionalInfo: "12% increase from last month",
       },
       {
