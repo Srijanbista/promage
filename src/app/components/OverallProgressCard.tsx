@@ -59,6 +59,7 @@ const OverallProgressCard = ({
         }}
       >
         <div className="rounded-full w-60 h-60 bg-white rotate-90 flex flex-col justify-center items-center">
+          <span className="text-4xl">{total}</span>
           <p>Projects</p>
         </div>
       </div>
