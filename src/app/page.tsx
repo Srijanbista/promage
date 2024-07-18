@@ -5,12 +5,18 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { OverviewCard } from "./components/OverviewCard";
-import { getAllProjects } from "./api/project/(services)/project.service";
+import {
+  getAllProjects,
+  getAllProjectsWithStatus,
+} from "./api/project/(services)/project.service";
 import ProjectSummary from "./components/ProjectSummary";
 import { ProjectWithManager } from "./utils/types";
+import OverallProgressCard from "./components/OverallProgressCard";
 export default async function Home() {
   try {
     const projects: ProjectWithManager[] = await getAllProjects();
+    const { total, totalOngoing, totalAtRisk, totalDelayed, totalCompleted } =
+      await getAllProjectsWithStatus();
     const totalRevenue =
       projects?.reduce((amount, project) => amount + project.budget!, 0) ?? 0;
 
@@ -53,9 +59,8 @@ export default async function Home() {
       },
     ];
     return (
-      <main className="overflow-y-auto h-screen no-scrollbar scroll-smooth py-2 px-6 lg:px-12 lg:py-4 bg-[#F0C274]/30 text-black">
+      <main className="overflow-y-auto h-screen no-scrollbar scroll-smooth p-4 lg:p-8 bg-[#F0C274]/30 text-black">
         <section>
-          <h1 className="text-lg lg:text-2xl mb-4">Overview</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 mb-4">
             {overViewCardData.map((data) => (
               <OverviewCard
@@ -68,8 +73,19 @@ export default async function Home() {
             ))}
           </div>
         </section>
-        <section>
-          <ProjectSummary projects={projects} />
+        <section className="flex flex-wrap gap-5">
+          <div className="grow">
+            <ProjectSummary projects={projects} />
+          </div>
+          <div className="grow flex">
+            <OverallProgressCard
+              total={total}
+              totalOngoing={totalOngoing}
+              totalAtRisk={totalAtRisk}
+              totalDelayed={totalDelayed}
+              totalCompleted={totalCompleted}
+            />
+          </div>
         </section>
       </main>
     );

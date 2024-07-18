@@ -37,6 +37,26 @@ export async function createProject(body: any) {
   }
 }
 
+export async function updateProjectById(id: string, body: any) {
+  try {
+    const data = await projectValidationSchema.validate(body);
+    const resp = await fetch(`api/project/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!resp.ok) {
+      throw new Error("Error updating project");
+    }
+    return resp.json();
+  } catch (error) {
+    console.log("Error creating project", error);
+    throw error;
+  }
+}
+
 export async function deleteProjectById(projectId: string) {
   try {
     const resp = await fetch(`/api/project/${projectId}`, {

@@ -33,7 +33,7 @@ interface SignUpValues extends LoginValues {
   name: string;
 }
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
   const [isSignInPage, setIsSignInPage] = useState(true);
   const router = useRouter();
 
@@ -47,39 +47,36 @@ const LoginForm = () => {
     values: SignUpValues | LoginValues,
     resetForm: FormikHelpers<LoginValues | SignUpValues>["resetForm"]
   ) => {
+    setIsLoading(true);
     if (isSignInPage) {
       handleLogin(values as LoginValues)
         .then((resp) => {
-          debugger;
-          console.log(resp);
           localStorage.setItem("user:token", resp.token);
-          router.push("/dashboard");
-          setTimeout(() => {
-            successToast("Login successful");
-          }, 2000);
+          localStorage.setItem("user:name", resp.name);
+          router.push("/");
+          successToast("Login successful");
         })
         .catch(() => {
           console.log("Invalid credentials");
-          setTimeout(() => {
-            errorToast("Invalid credentials");
-          }, 2000);
+          errorToast("Invalid credentials");
         })
-        .finally(() => resetForm());
+        .finally(() => {
+          resetForm();
+          setIsLoading(false);
+        });
     } else {
       handleUserSignup(values as SignUpValues)
         .then((resp) => {
-          console.log(resp);
-          setTimeout(() => {
-            successToast("Sign Up successful");
-          }, 2000);
+          successToast("Sign Up successful");
+          setIsSignInPage(true);
         })
         .catch(() => {
-          console.log("Error creating user");
-          setTimeout(() => {
-            errorToast("Error creating user");
-          }, 2000);
+          errorToast("Error creating user");
         })
-        .finally(() => resetForm());
+        .finally(() => {
+          resetForm();
+          setIsLoading(false);
+        });
     }
   };
 

@@ -1,11 +1,41 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ProjectWithManager } from "../utils/types";
 import { dateFormatter } from "../utils/helpers";
+import { ProjectStatus } from "@prisma/client";
+import CircularProgress from "./CircularProgress";
 
 const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
   console.log("projects", projects);
+
+  const getColorAndBackgroundColorByStatus = (status: ProjectStatus) => {
+    let color = "";
+    let bgColor = "";
+    switch (status) {
+      case "ONGOING":
+        color = "text-sky-500";
+        bgColor = "bg-sky-100";
+        break;
+      case "DELAYED":
+        color = "text-orange-500";
+        bgColor = "bg-orange-100";
+        break;
+      case "ATRISK":
+        color = "text-red-500";
+        bgColor = "bg-red-100";
+        break;
+      case "COMPLETED":
+        color = "text-green-500";
+        bgColor = "bg-green-100";
+        break;
+      default:
+        color = "text-neutral-500";
+        bgColor = "bg-neutral-100";
+        break;
+    }
+    return `${color} ${bgColor}`;
+  };
   return (
-    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 max-w-4xl overflow-hidden">
+    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 overflow-hidden">
       <div className="flex justify-between">
         <h1 className="font-semibold">Project Summary</h1>
         <div className="flex gap-x-2">
@@ -37,12 +67,10 @@ const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
                 <div className="col-span-2 flex items-center">
                   <p className="truncate">Due Date</p>
                 </div>
-                <div className="col-span-2 flex items-center">
-                  <p className="truncate" title="OS Version">
-                    Status
-                  </p>
+                <div className="col-span-3 md:col-span-2 flex items-center">
+                  <p className="truncate">Status</p>
                 </div>
-                <div className="col-span-1 flex items-center">
+                <div className="hidden col-span-1 md:flex items-center">
                   <p className="truncate">Progress</p>
                 </div>
               </div>
@@ -66,13 +94,20 @@ const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
                     {dateFormatter(project.dueDate as any) ?? "--"}
                   </p>
                 </div>
-                <div className="col-span-2 flex items-center">
-                  <p className="truncate" title="OS Version">
+                <div className="col-span-3 md:col-span-2 flex items-center">
+                  <p
+                    className={`truncate px-2 py-1 rounded-3xl ${getColorAndBackgroundColorByStatus(
+                      project.status
+                    )}`}
+                  >
                     {project.status}
                   </p>
                 </div>
-                <div className="col-span-1 flex items-center">
-                  <p className="truncate">{project.progress}</p>
+                <div className="hidden col-span-1 md:flex items-center">
+                  <CircularProgress
+                    completionPercentage={project.progress}
+                    variant="progress"
+                  />
                 </div>
               </div>
             </div>
