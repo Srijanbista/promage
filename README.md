@@ -15,7 +15,7 @@ A simplified project management dashboard built using Next.js 14 with App Router
 Ensure you have the following installed on your machine:
 
 - [Docker](https://www.docker.com/get-started)
-- 
+  
 ### Installation
 
 1. **Clone the repository**:
