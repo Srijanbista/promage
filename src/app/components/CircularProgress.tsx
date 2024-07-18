@@ -39,11 +39,6 @@ const CircularProgress = ({
 
   return (
     <div className={`flex gap-2 items-center `}>
-      {
-        <span className={`text-${size} text-neutral-700 font-normal`}>
-          {title}
-        </span>
-      }
       <div
         className={` ${
           variant == "report" ? "w-20 h-20 " : "w-12 h-12"
