@@ -1,5 +1,4 @@
 "use client";
-import LoaderWithBackdrop from "@/app/components/LoaderWithBackdrop";
 import ProjectCard from "@/app/components/ProjectCard";
 import { ProjectWithManager } from "@/app/utils/types";
 import { useState } from "react";
@@ -13,14 +12,15 @@ export const ProjectBase = ({
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
-      <LoaderWithBackdrop isLoading={isLoading} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}
             id={project.id}
             title={project.title}
-            managerName={project.manager.name ?? "No Manager"}
+            description={project.description ?? ""}
+            managerEmail={project.manager.email ?? ""}
+            managerName={project.manager.name ?? ""}
             dateCreated={project.createdAt}
             lastUpdated={project.updatedAt}
             dueDate={project.dueDate as any}
@@ -29,7 +29,6 @@ export const ProjectBase = ({
             status={project.status}
             projects={projects}
             setProjects={setProjects}
-            setIsLoading={setIsLoading}
           />
         ))}
       </div>

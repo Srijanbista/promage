@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { useNavigateToLink } from "../utils/hooks";
 import { dateFormatter } from "../utils/helpers";
 import { deleteProjectById } from "../project/(services)/project.service";
 import { errorToast, successToast } from "../utils/Toaster";
@@ -16,12 +15,16 @@ import { ProjectWithManager } from "../utils/types";
 import StatusPills from "./StatusPills";
 import { ProjectStatus } from "@prisma/client";
 import CircularProgress from "./CircularProgress";
+import { EditProjectForm } from "./EditProjectForm";
+import { Modal } from "./Modal";
 
 export type ProjectCardProps = {
   status: ProjectStatus;
   id: string;
   title: string;
+  description: string;
   managerName: string;
+  managerEmail: string;
   dateCreated: Date;
   lastUpdated: Date;
   dueDate: Date;
@@ -29,13 +32,14 @@ export type ProjectCardProps = {
   budget?: number;
   projects: ProjectWithManager[];
   setProjects: CallableFunction;
-  setIsLoading: CallableFunction;
 };
 const ProjectCard = ({
   status = "ONGOING",
   id,
   title,
+  description,
   managerName,
+  managerEmail,
   dateCreated,
   lastUpdated,
   dueDate,
@@ -43,9 +47,7 @@ const ProjectCard = ({
   budget = 0,
   projects,
   setProjects,
-  setIsLoading,
-}: // setIsLoading,
-ProjectCardProps) => {
+}: ProjectCardProps) => {
   let color = "";
   const styleSwitcher = () => {
     if (status == "ONGOING") color = "border-sky-500";
@@ -55,14 +57,11 @@ ProjectCardProps) => {
     else color = "border-neutral-500";
   };
   styleSwitcher();
-  const navigate = useNavigateToLink();
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
-  const [showCloneConfirmationModal, setShowCloneConfirmationModal] =
-    useState(false);
+  const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false);
 
   const handleDeleteAppScoreCard = async (id: string) => {
-    setIsLoading(true);
     deleteProjectById(id)
       .then((resp) => {
         successToast("Project Deleted Successfully!");
@@ -70,15 +69,12 @@ ProjectCardProps) => {
       })
       .catch((err) => {
         errorToast("Error Deleting Project");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
   return (
     <>
-      <button
+      <div
         key={id}
         className={
           `relative bg-white/30 transition-all duration-300 ease-in-out group/project-card p-4 flex  flex-col items-stretch text-left gap-y-3 gap-x-1.5 max-w-screen-md shadow-md hover:shadow-lg rounded-lg cursor-pointer border-s-4 ` +
@@ -107,6 +103,9 @@ ProjectCardProps) => {
                 <button
                   title="Edit Project"
                   className="p-2 rounded-full text-left bg-white group/edit hover:bg-primary-50"
+                  onClick={() => {
+                    setIsEditProjectModalOpen(true);
+                  }}
                 >
                   <PencilIcon className="h-4 w-4 group-hover/edit:text-black text-neutral-800 transition-transform ease-in-out rotate-180 group-hover/project-card:rotate-0 duration-300 delay-100" />
                 </button>
@@ -175,7 +174,7 @@ ProjectCardProps) => {
           <StatusPills status={status} />
           <CircularProgress completionPercentage={progress} size="sm" />
         </div>
-      </button>
+      </div>
       <ConfirmationModal
         title="Delete Project?"
         description="Are you sure you want to delete the Project? All of your data will be permanently removed. This action cannot be undone."
@@ -185,6 +184,25 @@ ProjectCardProps) => {
         primaryButtonLabel="Delete"
         logo={<ExclamationTriangleIcon aria-hidden="true" />}
       />
+      <Modal
+        isModalOpen={isEditProjectModalOpen}
+        setIsModalOpen={setIsEditProjectModalOpen}
+      >
+        <EditProjectForm
+          setIsEditProjectModalOpen={setIsEditProjectModalOpen}
+          projectData={{
+            id,
+            title,
+            description,
+            managerName,
+            managerEmail,
+            status,
+            dueDate,
+            progress,
+            budget,
+          }}
+        />
+      </Modal>
     </>
   );
 };
