@@ -53,7 +53,7 @@ const LoginForm = () => {
           debugger;
           console.log(resp);
           localStorage.setItem("user:token", resp.token);
-          router.push("/dashboard");
+          router.push("/");
           setTimeout(() => {
             successToast("Login successful");
           }, 2000);
