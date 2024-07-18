@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+
 import { getAllProjects } from "../api/project/(services)/project.service";
 import { ProjectBase } from "./(components)/Project.base";
 
