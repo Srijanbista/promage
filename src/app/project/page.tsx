@@ -7,7 +7,7 @@ const Project = async () => {
 
     if (projects.length > 0) {
       return (
-        <main className="h-screen relative overflow-y-auto no-scrollbar scroll-smooth py-2 px-6 lg:px-12 lg:py-4 bg-[#F0C274]/30 text-black">
+        <main className="h-screen relative overflow-y-auto no-scrollbar scroll-smooth p-4 lg:p-8 bg-[#F0C274]/30 text-black">
           <ProjectBase projectsData={projects} />
         </main>
       );

@@ -53,9 +53,8 @@ export default async function Home() {
       },
     ];
     return (
-      <main className="overflow-y-auto h-screen no-scrollbar scroll-smooth py-2 px-6 lg:px-12 lg:py-4 bg-[#F0C274]/30 text-black">
+      <main className="overflow-y-auto h-screen no-scrollbar scroll-smooth p-4 lg:p-8 bg-[#F0C274]/30 text-black">
         <section>
-          <h1 className="text-lg lg:text-2xl mb-4">Overview</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 mb-4">
             {overViewCardData.map((data) => (
               <OverviewCard
