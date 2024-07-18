@@ -21,7 +21,7 @@ Ensure you have the following installed on your machine:
 1. **Clone the repository**:
 
     ```sh
-    git clone [https://github.com/your-username/simplified-project-management-dashboard.git](https://github.com/Srijanbista/Srijan-Bista-SimplifiedDashboard-Task)
+    git clone https://github.com/Srijanbista/Srijan-Bista-SimplifiedDashboard-Task
     cd Srijan-Bista-SimplifiedDashboard-Task
     ```
 
