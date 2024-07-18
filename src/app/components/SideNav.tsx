@@ -11,10 +11,10 @@ import {
   ClipboardDocumentListIcon as ClipboardDocumentListIconSolid,
 } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Modal } from "./Modal";
 import CreatProjectForm from "./CreatProjectForm";
+import { useNavigateToLink } from "../utils/hooks";
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -43,8 +43,8 @@ export default function Sidebar() {
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      screenWidth > 768 && setIsDesktopView(true);
-      screenWidth <= 768 && setIsCollapsed(true);
+      setIsDesktopView(screenWidth >= 1280);
+      setIsCollapsed(screenWidth <= 1280);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -58,7 +58,7 @@ export default function Sidebar() {
     <aside
       className={` ${
         !isDesktopView && (isCollapsed ? "w-60 -translate-x-60" : "w-60 left-0")
-      } bg-black text-white absolute h-screen z-50 lg:relative border-r border-neutral-200 py-6 px-6 transition-transform duration-500 ease-in-out`}
+      } bg-black text-white absolute h-screen z-50 xl:relative border-r border-neutral-200 py-6 px-6 transition-transform duration-500 ease-in-out`}
     >
       <Modal
         isModalOpen={isCreateProjectModalOpen}
@@ -72,7 +72,7 @@ export default function Sidebar() {
         strokeWidth={2}
         className={`absolute -right-[1.125rem] top-20 bg-white border border-neutral-200 text-neutral-800 rounded-full hover:bg-primary-100 hover:text-primary-700 hover:shadow-sm p-2 w-9 transition-transform duration-500 ease-in-out cursor-pointer ${
           isCollapsed ? "-rotate-180" : ""
-        }`}
+        } `}
         onClick={() => setIsCollapsed(!isCollapsed)}
       />
       <div
@@ -213,13 +213,4 @@ const isCurrent = (pathName: string, path: string) => {
     return pathName === path;
   }
   return pathName === path || pathName.startsWith(path + "/");
-};
-
-export const useNavigateToLink = () => {
-  const router = useRouter();
-  const navigateToLink = (link: string, refresh: boolean = false) => {
-    refresh && router.refresh();
-    router.push(link);
-  };
-  return navigateToLink;
 };

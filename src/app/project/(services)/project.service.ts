@@ -36,3 +36,21 @@ export async function createProject(body: any) {
     throw error;
   }
 }
+
+export async function deleteProjectById(projectId: string) {
+  try {
+    const resp = await fetch(`/api/project/${projectId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!resp.ok) {
+      throw new Error("Unable to delete project");
+    }
+    return resp;
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+}
