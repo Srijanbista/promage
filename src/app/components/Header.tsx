@@ -12,7 +12,7 @@ const Header = () => {
   };
   const pathName = usePathname();
   return (
-    <div className="border-b border-white backdrop-blur-sm py-2 lg:py-4 p px-6 lg:px-12 flex items-center justify-between bg-[#F0C274]/30">
+    <div className="border-b border-neutral-400 backdrop-blur-sm py-2 lg:py-4 p px-6 lg:px-12 flex items-center justify-between bg-[#F0C274]/30">
       <h1 className="text-black font-medium text-xl lg:text-3xl capitalize">
         {pathName == "/" ? "Dashboard" : pathName.split("/")[1]}
       </h1>
