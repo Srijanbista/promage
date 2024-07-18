@@ -35,7 +35,7 @@ const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
     return `${color} ${bgColor}`;
   };
   return (
-    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 max-w-4xl overflow-hidden">
+    <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 overflow-hidden">
       <div className="flex justify-between">
         <h1 className="font-semibold">Project Summary</h1>
         <div className="flex gap-x-2">

@@ -5,12 +5,18 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { OverviewCard } from "./components/OverviewCard";
-import { getAllProjects } from "./api/project/(services)/project.service";
+import {
+  getAllProjects,
+  getAllProjectsWithStatus,
+} from "./api/project/(services)/project.service";
 import ProjectSummary from "./components/ProjectSummary";
 import { ProjectWithManager } from "./utils/types";
+import OverallProgressCard from "./components/OverallProgressCard";
 export default async function Home() {
   try {
     const projects: ProjectWithManager[] = await getAllProjects();
+    const { total, totalOngoing, totalAtRisk, totalDelayed, totalCompleted } =
+      await getAllProjectsWithStatus();
     const totalRevenue =
       projects?.reduce((amount, project) => amount + project.budget!, 0) ?? 0;
 
@@ -67,8 +73,19 @@ export default async function Home() {
             ))}
           </div>
         </section>
-        <section>
-          <ProjectSummary projects={projects} />
+        <section className="flex flex-wrap gap-5">
+          <div className="grow">
+            <ProjectSummary projects={projects} />
+          </div>
+          <div className="grow flex">
+            <OverallProgressCard
+              total={total}
+              totalOngoing={totalOngoing}
+              totalAtRisk={totalAtRisk}
+              totalDelayed={totalDelayed}
+              totalCompleted={totalCompleted}
+            />
+          </div>
         </section>
       </main>
     );
