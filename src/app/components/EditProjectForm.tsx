@@ -43,7 +43,15 @@ export const EditProjectForm = ({
   const [managers, setManagers] = useState<{ name: string; email: string }[]>(
     []
   );
+  function formatDate(dateString: any) {
+    const date = new Date(dateString);
 
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(date.getUTCDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
   useEffect(() => {
     const getAllManagers = async () => {
       const data = await getAllProjectManagers();
@@ -57,7 +65,6 @@ export const EditProjectForm = ({
       })
       .catch((err) => console.log(err));
   }, []);
-  console.log("managerName", projectData.managerName);
   return (
     <div className="p-8 flex flex-col items-center ">
       <h1 className="text-center text-2xl font-semibold mb-8">Edit Project</h1>
@@ -68,7 +75,7 @@ export const EditProjectForm = ({
           description: projectData.description || "",
           managerEmail: projectData.managerEmail || "",
           status: projectData.status || "",
-          dueDate: projectData.dueDate || "",
+          dueDate: formatDate(projectData.dueDate) || "",
           progress: projectData.progress || 0,
           budget: projectData.budget || 0,
         }}
