@@ -43,7 +43,7 @@ model Project{
   updatedAt DateTime @updatedAt
   isDeleted Boolean @default(false)
   dueDate DateTime?
-  status String @default("ONGOING")
+  status ProjectStatus @default(ONGOING)
   budget Int @default(0)
   progress Int @default(0)
 }
