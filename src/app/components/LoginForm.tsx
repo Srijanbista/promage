@@ -52,6 +52,7 @@ const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
       handleLogin(values as LoginValues)
         .then((resp) => {
           localStorage.setItem("user:token", resp.token);
+          localStorage.setItem("user:name", resp.name);
           router.push("/");
           successToast("Login successful");
         })
