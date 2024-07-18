@@ -39,7 +39,7 @@ const AuthenticationProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(isAuthenticated);
 
       if (isAuthenticated) {
-        if (pathname === "/login") router.push("/dashboard");
+        if (pathname === "/login") router.push("/");
       } else {
         if (pathname !== "/login") router.push("/login");
         localStorage.removeItem("user:token");
