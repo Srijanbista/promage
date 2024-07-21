@@ -66,4 +66,3 @@ Contributions are welcome! Please fork the repository and create a pull request 
 
 ---
 
-Feel free to modify this README file to suit your project's specific needs.
