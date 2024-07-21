@@ -49,7 +49,7 @@ The project is organized into the following directories:
 
 ### Environment Variables
 
-Ensure you have the necessary environment variables set up for both the client and server. You can create `.env` files in the respective directories and define your variables there.
+Ensure you have the necessary environment variables set up for for the nextjs project. You can create `.env` file in the root directory and define your variables there.
 
 ## Contributing
 
