@@ -45,9 +45,6 @@ The project is organized into the following directories:
 - `/app/api`: Contains the backend code.
 - `/docker-compose.yml`: Docker Compose configuration file to set up the container.
 
-### Docker Configuration
-
-The `docker-compose.yml` file is configured to build and run the client and server containers. Ensure you have the appropriate Dockerfiles in the `/client` and `/server` directories.
 
 
 ### Environment Variables
