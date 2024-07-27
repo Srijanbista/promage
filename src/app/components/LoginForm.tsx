@@ -10,6 +10,8 @@ import {
   handleUserSignup,
 } from "../login/(services)/Login.service";
 import { FormikInputField } from "./CreatProjectForm";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
 // Validation schema for the login form
 const LoginFormSchema = yup.object().shape({
@@ -33,9 +35,10 @@ interface SignUpValues extends LoginValues {
   name: string;
 }
 
-const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
+const LoginForm = () => {
   const [isSignInPage, setIsSignInPage] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const initialValues = {
     email: "",
@@ -43,11 +46,12 @@ const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
   };
 
   // Handles form submission
-  const handleFormSubmit = (
+  const handleFormSubmit = async (
     values: SignUpValues | LoginValues,
     resetForm: FormikHelpers<LoginValues | SignUpValues>["resetForm"]
   ) => {
-    setIsLoading(true);
+    dispatch(startLoading());
+    await new Promise((resolve) => setTimeout(resolve, 200));
     if (isSignInPage) {
       handleLogin(values as LoginValues)
         .then((resp) => {
@@ -62,7 +66,7 @@ const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
         })
         .finally(() => {
           resetForm();
-          setIsLoading(false);
+          setTimeout(() => dispatch(stopLoading()), 1000); // 2 seconds delay
         });
     } else {
       handleUserSignup(values as SignUpValues)
@@ -75,7 +79,7 @@ const LoginForm = ({ setIsLoading }: { setIsLoading: CallableFunction }) => {
         })
         .finally(() => {
           resetForm();
-          setIsLoading(false);
+          setTimeout(() => dispatch(stopLoading()), 1000); // 2 seconds delay
         });
     }
   };

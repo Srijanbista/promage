@@ -6,12 +6,18 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
 const Header = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   // handles logout behaviour
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
+    dispatch(startLoading());
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     localStorage.removeItem("user:token");
+    setTimeout(() => dispatch(stopLoading()), 1000);
     router.push("/login");
   };
   const pathName = usePathname();
