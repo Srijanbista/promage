@@ -9,6 +9,8 @@ import {
 } from "../project/(services)/project.service";
 import { ComboBoxField, FormikInputField } from "./CreatProjectForm";
 import { errorToast, successToast } from "../utils/Toaster";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
 export const projectValidationSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -43,6 +45,7 @@ export const EditProjectForm = ({
   const [managers, setManagers] = useState<{ name: string; email: string }[]>(
     []
   );
+  const dispatch = useDispatch();
   function formatDate(dateString: any) {
     const date = new Date(dateString);
 
@@ -79,7 +82,9 @@ export const EditProjectForm = ({
           progress: projectData.progress || 0,
           budget: projectData.budget || 0,
         }}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          dispatch(startLoading());
+          await new Promise((res) => setTimeout(res, 2000));
           updateProjectById(projectData.id, values)
             .then((rsp) => {
               console.log(rsp);
@@ -90,7 +95,7 @@ export const EditProjectForm = ({
               console.log(err);
               errorToast("Error Updating Project");
             })
-            .finally(() => {});
+            .finally(() => dispatch(stopLoading()));
         }}
         validationSchema={projectValidationSchema}
       >
