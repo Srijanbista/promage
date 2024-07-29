@@ -9,6 +9,8 @@ import {
   getAllProjectManagers,
 } from "../project/(services)/project.service";
 import { errorToast, successToast } from "../utils/Toaster";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
 export const projectValidationSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -31,6 +33,7 @@ const CreatProjectForm = ({
   const [managers, setManagers] = useState<{ name: string; email: string }[]>(
     []
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getAllManagers = async () => {
@@ -62,7 +65,9 @@ const CreatProjectForm = ({
           progress: 0,
           budget: 0,
         }}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          dispatch(startLoading());
+          await new Promise((res) => setTimeout(res, 2000));
           console.log(values);
           createProject(values)
             .then((rsp) => {
@@ -73,7 +78,8 @@ const CreatProjectForm = ({
             .catch((err) => {
               console.log(err);
               errorToast("Error Adding Project");
-            });
+            })
+            .finally(() => dispatch(stopLoading()));
         }}
         validationSchema={projectValidationSchema}
       >
