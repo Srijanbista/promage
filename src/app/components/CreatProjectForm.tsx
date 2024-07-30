@@ -22,7 +22,7 @@ export const projectValidationSchema = yup.object().shape({
     .required("Due date is required")
     .min(new Date(), "Due date should be greater than today"),
   progress: yup.number(),
-  budget: yup.number(),
+  budget: yup.number().min(1000, "Budget should be greater than 1000"),
 });
 
 const CreatProjectForm = ({
