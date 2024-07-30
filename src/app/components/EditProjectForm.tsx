@@ -17,11 +17,8 @@ export const projectValidationSchema = yup.object().shape({
   description: yup.string(),
   managerEmail: yup.string().required("Manager is required"),
   status: yup.string(),
-  dueDate: yup
-    .date()
-    .required("Due date is required")
-    .min(new Date(), "Due date should be greater than today"),
-  budget: yup.number().min(1, "Budget should be greater than 0"),
+  dueDate: yup.date().required("Due date is required"),
+  budget: yup.number().min(1000, "Budget should be greater than 1000"),
   progress: yup.number().min(1, "Progress should be greater than 0"),
 });
 
