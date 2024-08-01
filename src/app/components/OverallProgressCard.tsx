@@ -1,4 +1,6 @@
+"use client";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { infoToast } from "../utils/Toaster";
 
 const OverallProgressCard = ({
   total,
@@ -34,7 +36,10 @@ const OverallProgressCard = ({
     <div className="bg-white/35 rounded-2xl p-6 shadow-md flex flex-col gap-y-4 w-full items-center overflow-hidden">
       <div className="flex justify-between w-full">
         <h1 className="font-semibold">Overall Progress</h1>
-        <button className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center">
+        <button
+          className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center"
+          onClick={() => infoToast("Work in Progresss! ")}
+        >
           <span className="text-xs lg:text-sm">All</span>
           <ChevronDownIcon className="w-4 h-4" />
         </button>

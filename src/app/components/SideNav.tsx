@@ -10,7 +10,7 @@ import {
   Squares2X2Icon as Squares2X2IconSolid,
   ClipboardDocumentListIcon as ClipboardDocumentListIconSolid,
 } from "@heroicons/react/24/solid";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Modal } from "./Modal";
 import CreatProjectForm from "./CreatProjectForm";
@@ -50,6 +50,7 @@ export default function Sidebar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const router = useRouter();
   const hiddenStyle =
     isDesktopView && isCollapsed
       ? "group-hover/aside:inline-flex group-hover/aside:opacity-100 opacity-0"
@@ -80,7 +81,10 @@ export default function Sidebar() {
           isDesktopView && (isCollapsed ? "w-16 group/aside" : "w-52")
         }`}
       >
-        <div className="mb-20 flex gap-x-2 items-center justify-between">
+        <div
+          className="mb-20 flex gap-x-2 items-center justify-between cursor-pointer"
+          onClick={() => router.push("/")}
+        >
           <Image
             src={"/logo.svg"}
             height={40}

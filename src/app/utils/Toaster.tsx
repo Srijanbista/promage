@@ -13,3 +13,9 @@ export const errorToast = (message: string) => {
     position: "top-right",
   });
 };
+export const infoToast = (message: string) => {
+  toast(message, {
+    icon: "📢",
+    position: "top-right",
+  });
+};

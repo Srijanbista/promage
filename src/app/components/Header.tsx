@@ -8,6 +8,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
+import { infoToast } from "../utils/Toaster";
 
 const Header = () => {
   const router = useRouter();
@@ -33,11 +34,20 @@ const Header = () => {
           placeholder="Search anything...."
         />
         <div className="p-2 bg-white rounded-full hidden lg:flex justify-center items-center">
-          <BellIcon className="w-6 h-6 text-black cursor-pointer" />
+          <BellIcon
+            className="w-6 h-6 text-black cursor-pointer"
+            onClick={() => infoToast("Work in Progresss! ")}
+          />
         </div>
 
         <button className="bg-white pl-2 py-2 pr-4 rounded-2xl flex gap-x-2 lg:gap-x-4 items-center">
-          <Image src="/avatar.svg" height={40} width={40} alt="logo" />
+          <Image
+            src="/avatar.svg"
+            height={40}
+            width={40}
+            alt="logo"
+            onClick={() => infoToast("Work in Progresss! ")}
+          />
           <div className="text-left hidden lg:block">
             <p className="text-xs">
               {localStorage.getItem("user:name") ?? "User Name"}
