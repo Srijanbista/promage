@@ -1,8 +1,10 @@
+"use client";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ProjectWithManager } from "../utils/types";
 import { dateFormatter } from "../utils/helpers";
 import { ProjectStatus } from "@prisma/client";
 import CircularProgress from "./CircularProgress";
+import { infoToast } from "../utils/Toaster";
 
 const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
   console.log("projects", projects);
@@ -39,15 +41,24 @@ const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
       <div className="flex justify-between">
         <h1 className="font-semibold">Project Summary</h1>
         <div className="flex gap-x-2">
-          <button className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center ">
+          <button
+            className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center "
+            onClick={() => infoToast("Work in Progresss! ")}
+          >
             <span className="text-xs lg:text-sm">Project</span>
             <ChevronDownIcon className="w-4 h-4" />
           </button>
-          <button className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center">
+          <button
+            className="bg-white text-slate-800 hidden md:flex gap-x-3 px-3 py-1 rounded-xl items-center"
+            onClick={() => infoToast("Work in Progresss! ")}
+          >
             <span className="text-xs lg:text-sm">Project Manager</span>
             <ChevronDownIcon className="w-4 h-4" />
           </button>
-          <button className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center">
+          <button
+            className="bg-white text-slate-800 flex gap-x-3 px-3 py-1 rounded-xl items-center"
+            onClick={() => infoToast("Work in Progresss! ")}
+          >
             <span className="text-xs lg:text-sm">Status</span>
             <ChevronDownIcon className="w-4 h-4" />
           </button>
