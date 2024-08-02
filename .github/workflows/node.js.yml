@@ -19,8 +19,8 @@ jobs:
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env: 
-      DATABASE_URL: ${{ env.DATABASE_URL }}
-      JWT_SECRET: ${{env.JWT_SECRET}}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
