@@ -102,10 +102,10 @@ const CreatProjectForm = ({
                   formikProps={formikProps}
                   targetField="managerEmail"
                   placeholder="Manager"
-                  items={managers?.map(
-                    (manager) =>
-                      ({ id: manager.email, title: manager.name } ?? [])
-                  )}
+                  items={managers?.map((manager) => ({
+                    id: manager.email,
+                    title: manager.name,
+                  }))}
                 />
                 <ComboBoxField
                   formikProps={formikProps}
