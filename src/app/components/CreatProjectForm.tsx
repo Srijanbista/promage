@@ -43,7 +43,6 @@ const CreatProjectForm = ({
 
     getAllManagers()
       .then((resp) => {
-        console.log("managers", resp);
         setManagers(resp);
       })
       .catch((err) => console.log(err));
@@ -68,7 +67,6 @@ const CreatProjectForm = ({
         onSubmit={async (values) => {
           dispatch(startLoading());
           await new Promise((res) => setTimeout(res, 2000));
-          console.log(values);
           createProject(values)
             .then((rsp) => {
               console.log(rsp);
@@ -102,10 +100,10 @@ const CreatProjectForm = ({
                   formikProps={formikProps}
                   targetField="managerEmail"
                   placeholder="Manager"
-                  items={managers?.map(
-                    (manager) =>
-                      ({ id: manager.email, title: manager.name } ?? [])
-                  )}
+                  items={managers?.map((manager) => ({
+                    id: manager.email,
+                    title: manager.name,
+                  }))}
                 />
                 <ComboBoxField
                   formikProps={formikProps}

@@ -12,7 +12,7 @@ import { errorToast, successToast } from "../utils/Toaster";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
-export const projectValidationSchema = yup.object().shape({
+export const EditProjectValidationSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
   description: yup.string(),
   managerEmail: yup.string().required("Manager is required"),
@@ -60,7 +60,6 @@ export const EditProjectForm = ({
 
     getAllManagers()
       .then((resp) => {
-        console.log("managers", resp);
         setManagers(resp);
       })
       .catch((err) => console.log(err));
@@ -84,7 +83,6 @@ export const EditProjectForm = ({
           await new Promise((res) => setTimeout(res, 2000));
           updateProjectById(projectData.id, values)
             .then((rsp) => {
-              console.log(rsp);
               setIsEditProjectModalOpen(false);
               successToast("Project Updated Successfully");
             })
@@ -94,7 +92,7 @@ export const EditProjectForm = ({
             })
             .finally(() => dispatch(stopLoading()));
         }}
-        validationSchema={projectValidationSchema}
+        validationSchema={EditProjectValidationSchema}
       >
         {(formikProps) => {
           return (
@@ -115,10 +113,10 @@ export const EditProjectForm = ({
                   formikProps={formikProps}
                   targetField="managerEmail"
                   placeholder="Manager"
-                  items={managers?.map(
-                    (manager) =>
-                      ({ id: manager.email, title: manager.name } ?? [])
-                  )}
+                  items={managers?.map((manager) => ({
+                    id: manager.email,
+                    title: manager.name,
+                  }))}
                 />
                 <ComboBoxField
                   formikProps={formikProps}

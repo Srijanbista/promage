@@ -7,8 +7,6 @@ import CircularProgress from "./CircularProgress";
 import { infoToast } from "../utils/Toaster";
 
 const ProjectSummary = ({ projects }: { projects: ProjectWithManager[] }) => {
-  console.log("projects", projects);
-
   const getColorAndBackgroundColorByStatus = (status: ProjectStatus) => {
     let color = "";
     let bgColor = "";

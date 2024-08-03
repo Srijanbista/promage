@@ -1,4 +1,5 @@
 import { projectValidationSchema } from "@/app/components/CreatProjectForm";
+import { EditProjectValidationSchema } from "@/app/components/EditProjectForm";
 
 export async function getAllProjectManagers() {
   try {
@@ -39,7 +40,7 @@ export async function createProject(body: any) {
 
 export async function updateProjectById(id: string, body: any) {
   try {
-    const data = await projectValidationSchema.validate(body);
+    const data = await EditProjectValidationSchema.validate(body);
     const resp = await fetch(`api/project/${id}`, {
       method: "PUT",
       headers: {
