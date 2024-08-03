@@ -18,18 +18,35 @@ jobs:
       matrix:
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-    env: 
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        
     - run: npm ci
-    - run: npx prisma generate
-    - run: npm run build --if-present
-    - run: npm test
-      
+
+    - name: Generate Prisma Client
+      run: npx prisma generate
+      env: 
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
+    - name: Run Prisma Migrate
+      run: npx prisma migrate deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
+    - name: Build
+      run: npm run build --if-present
+      env: 
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
+    - name: Run Tests
+      run: npm test
+      env: 
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
