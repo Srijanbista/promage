@@ -60,7 +60,6 @@ export const EditProjectForm = ({
 
     getAllManagers()
       .then((resp) => {
-        console.log("managers", resp);
         setManagers(resp);
       })
       .catch((err) => console.log(err));
@@ -84,7 +83,6 @@ export const EditProjectForm = ({
           await new Promise((res) => setTimeout(res, 2000));
           updateProjectById(projectData.id, values)
             .then((rsp) => {
-              console.log(rsp);
               setIsEditProjectModalOpen(false);
               successToast("Project Updated Successfully");
             })
