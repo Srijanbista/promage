@@ -18,6 +18,7 @@ import CircularProgress from "./CircularProgress";
 import { EditProjectForm } from "./EditProjectForm";
 import { Modal } from "./Modal";
 import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../(slice)/LoaderSlice";
 
 export type ProjectCardProps = {
   status: ProjectStatus;
@@ -63,7 +64,9 @@ const ProjectCard = ({
     useState(false);
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false);
 
-  const handleDeleteAppScoreCard = async (id: string) => {
+  const handleDeleteProject = async (id: string) => {
+    dispatch(startLoading());
+    await new Promise((res) => setTimeout(res, 2000));
     deleteProjectById(id)
       .then((resp) => {
         successToast("Project Deleted Successfully!");
@@ -71,7 +74,8 @@ const ProjectCard = ({
       })
       .catch((err) => {
         errorToast("Error Deleting Project");
-      });
+      })
+      .finally(() => dispatch(stopLoading()));
   };
 
   return (
@@ -182,7 +186,7 @@ const ProjectCard = ({
         description="Are you sure you want to delete the Project? All of your data will be permanently removed. This action cannot be undone."
         isModalOpen={showDeleteConfirmationModal}
         setIsModalOpen={setShowDeleteConfirmationModal}
-        handlePrimaryAction={() => handleDeleteAppScoreCard(id)}
+        handlePrimaryAction={() => handleDeleteProject(id)}
         primaryButtonLabel="Delete"
         logo={<ExclamationTriangleIcon aria-hidden="true" />}
       />
