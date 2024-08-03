@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import LoaderReducer from "./(slice)/LoaderSlice";
+import ProjectReducer from "./(slice)/ProjectSlice";
 
 export const store = configureStore({
   reducer: {
     loader: LoaderReducer,
+    projects: ProjectReducer,
   },
 });
 
