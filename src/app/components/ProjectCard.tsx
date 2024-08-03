@@ -17,6 +17,7 @@ import { ProjectStatus } from "@prisma/client";
 import CircularProgress from "./CircularProgress";
 import { EditProjectForm } from "./EditProjectForm";
 import { Modal } from "./Modal";
+import { useDispatch } from "react-redux";
 
 export type ProjectCardProps = {
   status: ProjectStatus;
@@ -48,6 +49,7 @@ const ProjectCard = ({
   projects,
   setProjects,
 }: ProjectCardProps) => {
+  const dispatch = useDispatch();
   let color = "";
   const styleSwitcher = () => {
     if (status == "ONGOING") color = "border-sky-500";
@@ -65,7 +67,7 @@ const ProjectCard = ({
     deleteProjectById(id)
       .then((resp) => {
         successToast("Project Deleted Successfully!");
-        setProjects(projects.filter((project) => project.id !== id));
+        dispatch(setProjects(projects.filter((project) => project.id !== id)));
       })
       .catch((err) => {
         errorToast("Error Deleting Project");
