@@ -69,7 +69,6 @@ const CreatProjectForm = ({
           await new Promise((res) => setTimeout(res, 2000));
           createProject(values)
             .then((rsp) => {
-              console.log(rsp);
               setIsCreateProjectModalOpen(false);
               successToast("Project Added Successfully");
             })
