@@ -168,7 +168,6 @@ export const FormikInputField = ({
   type?: string;
   className?: HTMLProps<HTMLElement>["className"];
 }) => {
-  let randomId = crypto.randomUUID();
   return (
     <div className={className}>
       <div className="relative">
@@ -179,7 +178,7 @@ export const FormikInputField = ({
           name={name}
           disabled={isDisabled}
           placeholder=""
-          id={`${randomId}-${placeholder}`}
+          id={placeholder}
           className="w-full px-2 peer rounded-md py-2 border border-neutral-300 focus-visible:outline-none focus-visible:border-primary-700"
           onBlur={(e: any) => {
             e.target.value = e.target.value.trim();
@@ -187,7 +186,7 @@ export const FormikInputField = ({
           }}
         />
         <label
-          htmlFor={`${randomId}-${placeholder}`}
+          htmlFor={placeholder}
           className="absolute text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-primary-700 peer-focus:dark:text-primary-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
         >
           {placeholder}
