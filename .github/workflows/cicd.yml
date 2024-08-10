@@ -16,7 +16,7 @@ jobs:
       - name: Build docker image
         run: docker build -t promage .
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && docker tag promage ${{ secrets.DOCKER_USERNAME }}/promage && docker push ${{ secrets.DOCKER_USERNAME }}/promage
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Push to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/promage:latest
   deploy:
