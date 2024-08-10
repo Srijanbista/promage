@@ -1,0 +1,17 @@
+name: Deploye Next.js Application 
+
+on: 
+  push:
+    branches:
+      - deploy-to-ec2
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -name: Checkout Source
+        uses: actions/checkout@v4
+      -name: Create .env file 
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env && echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+      -name: Build docker image
+
