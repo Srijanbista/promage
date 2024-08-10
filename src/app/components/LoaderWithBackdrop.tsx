@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 const LoaderWithBackdrop = () => {
   const isLoading = useSelector((state: RootState) => state.loader.isLoading);
-  console.log("isLoading", isLoading);
   return (
     <>
       {isLoading && (
