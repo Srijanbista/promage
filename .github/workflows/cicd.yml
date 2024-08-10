@@ -1,17 +1,31 @@
-name: Deploye Next.js Application 
+name: Deploye Next.js Application
 
-on: 
+on:
   push:
     branches:
       - deploy-to-ec2
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      -name: Checkout Source
+      - name: Checkout Source
         uses: actions/checkout@v4
-      -name: Create .env file 
+      - name: Create .env file
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env && echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-      -name: Build docker image
-
+      - name: Build docker image
+        run: docker build -t promage .
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && docker tag promage ${{ secrets.DOCKER_USERNAME }}/promage && docker push ${{ secrets.DOCKER_USERNAME }}/promage
+      - name: Push to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/promage:latest
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull Image from Docker Hub
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/promage:latest
+      - name: Delete Container
+        run: docker rm -f promage-container
+      - name: Run Docker Container
+        run: docker run -d -p 3000:3000 --name promage-container ${{ secrets.DOCKER_USERNAME }}/promage
